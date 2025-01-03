@@ -14,13 +14,13 @@ locals {
   # These non-empty .zip files are needed only when creating resources.
   # Run the build commands and zip the binary files.
   # The .zip file an be deleted/moved afterwards.
-  endpoint_filename = "endpoint.zip"
-  task_filename     = "task.zip"
+  endpoint_filename = "/path/to/endpoint.zip"
+  task_filename     = "/path/to/task.zip"
 }
 
 module "dreamingway-bot" {
   # https://github.com/kn-lim/chattingway-terraform
-  source = "github.com/kn-lim/chattingway-terraform?ref=v1.0.0"
+  source = "github.com/kn-lim/chattingway-terraform?ref=v1.1.2"
 
   # Required
 
@@ -44,12 +44,13 @@ module "dreamingway-bot" {
   # Optional
 
   # name              = local.name
-  # log_format        = "Text"
+  # log_format        = "JSON"
   # region            = "us-west-2"
   # retention_in_days = 3
   # runtime           = "provided.al2023"
   # endpoint_timeout  = 3
   # task_timeout      = 300
+  # ec2_instance_arns = []
   # tags = {
   #   App = local.name
   # }
