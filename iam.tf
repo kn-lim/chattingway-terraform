@@ -62,9 +62,9 @@ data "aws_iam_policy_document" "lambda_logging" {
 }
 
 resource "aws_iam_policy" "this" {
-  name        = "lambda_logging"
+  name        = "${var.name}-lambda_logging"
   path        = "/"
-  description = "IAM policy for logging from a lambda"
+  description = "IAM policy for logging from a lambda function"
   policy      = data.aws_iam_policy_document.lambda_logging.json
 }
 
