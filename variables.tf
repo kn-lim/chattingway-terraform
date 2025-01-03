@@ -74,3 +74,9 @@ variable "tags" {
     App = "chattingway"
   }
 }
+
+variable "ec2_instances" {
+  description = "A list of EC2 instances to manage"
+  type        = list(string)
+  default     = []
+}

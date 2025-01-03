@@ -45,6 +45,29 @@ resource "aws_iam_role_policy" "invoke" {
   })
 }
 
+resource "aws_iam_role_policy" "manage_ec2" {
+  count = len(var.ec2_instances) == 0 ? 0 : 1
+
+  name = "ManageEC2Instances"
+  role = aws_iam_role.task.name
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "ec2:DescribeInstances",
+          "ec2:StartInstances",
+          "ec2:StopInstances",
+          "ec2:RebootInstances",
+        ],
+        Resource = var.ec2_instances,
+      },
+    ],
+  })
+}
+
 # CloudWatch
 
 data "aws_iam_policy_document" "lambda_logging" {
