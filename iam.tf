@@ -16,13 +16,11 @@ data "aws_iam_policy_document" "assume_role" {
 resource "aws_iam_role" "endpoint" {
   name               = "${var.name}-endpoint"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
-  tags               = var.tags
 }
 
 resource "aws_iam_role" "task" {
   name               = "${var.name}-task"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
-  tags               = var.tags
 }
 
 resource "aws_iam_role_policy" "invoke" {
@@ -62,7 +60,7 @@ resource "aws_iam_role_policy" "manage_ec2" {
           "ec2:StopInstances",
           "ec2:RebootInstances",
         ],
-        Resource = var.ec2_instances,
+        Resource = var.ec2_instance_arns,
       },
     ],
   })

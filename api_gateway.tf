@@ -1,7 +1,6 @@
 resource "aws_api_gateway_rest_api" "this" {
   name        = "${var.name}-API"
   description = "API Gateway for ${var.name}"
-  tags        = var.tags
 }
 
 resource "aws_api_gateway_resource" "this" {

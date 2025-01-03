@@ -188,11 +188,11 @@ output "api_endpoint" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_account_id"></a> [account\_id](#input\_account\_id) | The AWS account ID | `string` | n/a | yes |
-| <a name="input_ec2_instances"></a> [ec2\_instances](#input\_ec2\_instances) | A list of EC2 instances to manage | `list(string)` | `[]` | no |
+| <a name="input_ec2_instance_arns"></a> [ec2\_instance\_arns](#input\_ec2\_instance\_arns) | A list of EC2 instance ARNs to manage | `list(string)` | `[]` | no |
 | <a name="input_endpoint_environment_variables"></a> [endpoint\_environment\_variables](#input\_endpoint\_environment\_variables) | A map of environment variables to apply to the Endpoint Lambda function | `map(string)` | n/a | yes |
 | <a name="input_endpoint_filename"></a> [endpoint\_filename](#input\_endpoint\_filename) | The filename to upload to the Endpoint Lambda function | `string` | n/a | yes |
 | <a name="input_endpoint_timeout"></a> [endpoint\_timeout](#input\_endpoint\_timeout) | The timeout for the Endpoint Lambda function | `number` | `3` | no |
-| <a name="input_log_format"></a> [log\_format](#input\_log\_format) | The log format for the CloudWatch logs | `string` | `"Text"` | no |
+| <a name="input_log_format"></a> [log\_format](#input\_log\_format) | The log format for the CloudWatch logs | `string` | `"JSON"` | no |
 | <a name="input_name"></a> [name](#input\_name) | The name of the resources | `string` | `"chattingway"` | no |
 | <a name="input_region"></a> [region](#input\_region) | The region in which the resources will be created | `string` | `"us-west-2"` | no |
 | <a name="input_retention_in_days"></a> [retention\_in\_days](#input\_retention\_in\_days) | The number of days to retain logs in CloudWatch | `number` | `3` | no |

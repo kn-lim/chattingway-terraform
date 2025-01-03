@@ -15,8 +15,6 @@ resource "aws_lambda_function" "endpoint" {
     log_format = var.log_format
   }
 
-  tags = var.tags
-
   depends_on = [aws_cloudwatch_log_group.endpoint]
 }
 
@@ -36,8 +34,6 @@ resource "aws_lambda_function" "task" {
     log_group  = aws_cloudwatch_log_group.task.name
     log_format = var.log_format
   }
-
-  tags = var.tags
 
   depends_on = [aws_cloudwatch_log_group.task]
 }

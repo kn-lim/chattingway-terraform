@@ -46,7 +46,7 @@ variable "task_timeout" {
 variable "log_format" {
   description = "The log format for the CloudWatch logs"
   type        = string
-  default     = "Text"
+  default     = "JSON"
 }
 
 variable "retention_in_days" {
@@ -75,8 +75,8 @@ variable "tags" {
   }
 }
 
-variable "ec2_instances" {
-  description = "A list of EC2 instances to manage"
+variable "ec2_instance_arns" {
+  description = "A list of EC2 instance ARNs to manage"
   type        = list(string)
   default     = []
 }
