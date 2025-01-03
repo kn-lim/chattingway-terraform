@@ -44,7 +44,7 @@ resource "aws_iam_role_policy" "invoke" {
 }
 
 resource "aws_iam_role_policy" "manage_ec2" {
-  count = len(var.ec2_instances) == 0 ? 0 : 1
+  count = length(var.ec2_instance_arns) == 0 ? 0 : 1
 
   name = "ManageEC2Instances"
   role = aws_iam_role.task.name
