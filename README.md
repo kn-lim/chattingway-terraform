@@ -35,7 +35,7 @@ locals {
 
 module "slackingway-bot" {
   # https://github.com/kn-lim/chattingway-terraform
-  source = "github.com/kn-lim/chattingway-terraform?ref=v1.1.2"
+  source = "github.com/kn-lim/chattingway-terraform?ref=v1.2.0"
 
   # Required
 
@@ -105,7 +105,7 @@ locals {
 
 module "dreamingway-bot" {
   # https://github.com/kn-lim/chattingway-terraform
-  source = "github.com/kn-lim/chattingway-terraform?ref=v1.1.2"
+  source = "github.com/kn-lim/chattingway-terraform?ref=v1.2.0"
 
   # Required
 
@@ -151,14 +151,14 @@ output "api_endpoint" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 6.0 |
 
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.10 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.0 |
 
 ## Resources
 
