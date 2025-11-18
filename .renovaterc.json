@@ -1,6 +1,14 @@
 {
   "extends": [
     "github>kn-lim/homelab//templates/renovate/homelab/default"
+  ],
+  "packageRules": [
+    {
+      "matchManagers": ["terraform"],
+      "matchPaths": ["example/**"],
+      "semanticCommitType": "chore",
+      "groupName": "terraform examples"
+    }
   ]
 }
 
