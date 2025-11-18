@@ -20,7 +20,7 @@ locals {
 
 module "dreamingway-bot" {
   # https://github.com/kn-lim/chattingway-terraform
-  source = "github.com/kn-lim/chattingway-terraform?ref=v1.1.2"
+  source = "github.com/kn-lim/chattingway-terraform?ref=v1.2.0"
 
   # Required
 
