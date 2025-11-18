@@ -4,11 +4,14 @@
   ],
   "packageRules": [
     {
-      "matchManagers": ["terraform"],
-      "matchPaths": ["example/**"],
+      "matchManagers": [
+        "terraform"
+      ],
+      "matchFileNames": [
+        "example/**"
+      ],
       "semanticCommitType": "chore",
       "groupName": "terraform examples"
     }
   ]
 }
-
