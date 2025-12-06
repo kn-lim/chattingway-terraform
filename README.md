@@ -147,16 +147,20 @@ output "api_endpoint" {
 }
 ```
 
-## Providers
-
-No providers.
-
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.10 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.0 |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_api_gateway"></a> [api\_gateway](#module\_api\_gateway) | terraform-aws-modules/apigateway-v2/aws | ~> 6.0 |
+| <a name="module_endpoint_lambda"></a> [endpoint\_lambda](#module\_endpoint\_lambda) | terraform-aws-modules/lambda/aws | ~> 8.1 |
+| <a name="module_task_lambda"></a> [task\_lambda](#module\_task\_lambda) | terraform-aws-modules/lambda/aws | ~> 8.1 |
 
 ## Resources
 

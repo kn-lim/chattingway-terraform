@@ -15,9 +15,9 @@ content: |-
   {{ include "example/dreamingway_bot.tf" }}
   ```
 
-  {{ .Providers }}
-
   {{ .Requirements }}
+
+  {{ .Modules }}
 
   {{ .Resources }}
 
