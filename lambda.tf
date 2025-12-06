@@ -1,49 +1,107 @@
-resource "aws_lambda_function" "endpoint" {
-  filename      = var.endpoint_filename
+module "endpoint_lambda" {
+  source  = "terraform-aws-modules/lambda/aws"
+  version = "~> 8.1"
+
   function_name = "${var.name}-endpoint"
-  role          = aws_iam_role.endpoint.arn
-  handler       = "hello.handler" # Not used
-  runtime       = var.runtime
-  timeout       = var.endpoint_timeout
+  description   = "Endpoint Lambda function for ${var.name}"
 
-  environment {
-    variables = var.endpoint_environment_variables
+  architectures         = local.architectures
+  environment_variables = var.endpoint_lambda_environment_variables
+  handler               = local.handler
+  runtime               = local.runtime
+  timeout               = var.endpoint_lambda_timeout
+  tags                  = var.tags
+
+  create_package         = false
+  local_existing_package = "${path.module}/packages/endpoint.zip"
+
+  # CloudWatch
+  attach_cloudwatch_logs_policy      = true
+  attach_create_log_group_permission = true
+  cloudwatch_logs_log_group_class    = local.log_group_class
+  cloudwatch_logs_retention_in_days  = var.cloudwatch_logs_retention_in_days
+  cloudwatch_logs_tags               = var.tags
+  logging_application_log_level      = var.cloudwatch_logs_application_log_level
+  logging_log_format                 = local.logging_log_format
+  logging_system_log_level           = var.lambda_system_log_level
+  use_existing_cloudwatch_log_group  = false
+
+  # IAM
+  create_role = true
+  role_name   = "${var.name}-endpoint-role"
+  assume_role_policy_statements = {
+    lambda_service = {
+      effect  = "Allow",
+      actions = ["sts:AssumeRole"],
+      principals = {
+        service_principal = {
+          type        = "Service",
+          identifiers = ["lambda.amazonaws.com"]
+        }
+      }
+    }
+  }
+  attach_policy_statements = true
+  policy_statements = {
+    lambda = {
+      effect    = "Allow"
+      actions   = ["lambda:InvokeFunction"]
+      resources = [module.task_lambda.lambda_function_arn]
+    }
   }
 
-  logging_config {
-    log_group  = aws_cloudwatch_log_group.endpoint.name
-    log_format = var.log_format
+  # Trigger
+  allowed_triggers = {
+    APIGatewayAny = {
+      service    = "apigateway"
+      source_arn = "${module.api_gateway.api_execution_arn}/*/*"
+    }
   }
-
-  depends_on = [aws_cloudwatch_log_group.endpoint]
 }
 
-resource "aws_lambda_function" "task" {
-  filename      = var.task_filename
+module "task_lambda" {
+  source  = "terraform-aws-modules/lambda/aws"
+  version = "~> 8.1"
+
   function_name = "${var.name}-task"
-  role          = aws_iam_role.task.arn
-  handler       = "hello.handler" # Not used
-  runtime       = var.runtime
-  timeout       = var.task_timeout
+  description   = "Task Lambda function for ${var.name}"
 
-  environment {
-    variables = var.task_environment_variables
+  architectures         = local.architectures
+  environment_variables = var.task_lambda_environment_variables
+  handler               = local.handler
+  runtime               = local.runtime
+  timeout               = var.task_lambda_timeout
+  tags                  = var.tags
+
+  create_package         = false
+  local_existing_package = "${path.module}/packages/task.zip"
+
+  # CloudWatch
+  attach_cloudwatch_logs_policy      = true
+  attach_create_log_group_permission = true
+  cloudwatch_logs_log_group_class    = local.log_group_class
+  cloudwatch_logs_retention_in_days  = var.cloudwatch_logs_retention_in_days
+  cloudwatch_logs_tags               = var.tags
+  logging_application_log_level      = var.cloudwatch_logs_application_log_level
+  logging_log_format                 = local.logging_log_format
+  logging_system_log_level           = var.lambda_system_log_level
+  use_existing_cloudwatch_log_group  = false
+
+  # IAM
+  create_role = true
+  role_name   = "${var.name}-task-role"
+  assume_role_policy_statements = {
+    lambda_service = {
+      effect  = "Allow",
+      actions = ["sts:AssumeRole"],
+      principals = {
+        service_principal = {
+          type        = "Service",
+          identifiers = ["lambda.amazonaws.com"]
+        }
+      }
+    }
   }
-
-  logging_config {
-    log_group  = aws_cloudwatch_log_group.task.name
-    log_format = var.log_format
-  }
-
-  depends_on = [aws_cloudwatch_log_group.task]
-}
-
-resource "aws_lambda_permission" "api_gateway" {
-  statement_id  = "AllowExecutionFromAPIGateway"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.endpoint.function_name
-  principal     = "apigateway.amazonaws.com"
-
-  # More: http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-control-access-using-iam-policies-to-invoke-api.html
-  source_arn = "arn:aws:execute-api:${var.region}:${var.account_id}:${aws_api_gateway_rest_api.this.id}/*/${aws_api_gateway_method.this.http_method}${aws_api_gateway_resource.this.path}"
+  # attach_policy_statements = true
+  # policy_statements = {}
 }

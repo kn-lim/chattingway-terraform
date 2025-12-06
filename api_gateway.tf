@@ -1,42 +1,21 @@
-resource "aws_api_gateway_rest_api" "this" {
-  name        = "${var.name}-API"
-  description = "API Gateway for ${var.name}"
-}
+module "api_gateway" {
+  source  = "terraform-aws-modules/apigateway-v2/aws"
+  version = "~> 6.0"
 
-resource "aws_api_gateway_resource" "this" {
-  rest_api_id = aws_api_gateway_rest_api.this.id
-  parent_id   = aws_api_gateway_rest_api.this.root_resource_id
-  path_part   = var.name
-}
+  name          = "${var.name}-http"
+  description   = "HTTP API Gateway for ${var.name}"
+  protocol_type = "HTTP"
 
-resource "aws_api_gateway_method" "this" {
-  rest_api_id   = aws_api_gateway_rest_api.this.id
-  resource_id   = aws_api_gateway_resource.this.id
-  http_method   = "ANY"
-  authorization = "NONE"
-}
-
-resource "aws_api_gateway_integration" "this" {
-  rest_api_id             = aws_api_gateway_rest_api.this.id
-  resource_id             = aws_api_gateway_resource.this.id
-  http_method             = aws_api_gateway_method.this.http_method
-  integration_http_method = "POST"
-  type                    = "AWS_PROXY"
-  uri                     = aws_lambda_function.endpoint.invoke_arn
-}
-
-resource "aws_api_gateway_deployment" "this" {
-  rest_api_id = aws_api_gateway_rest_api.this.id
-
-  depends_on = [aws_api_gateway_method.this, aws_api_gateway_integration.this]
-
-  lifecycle {
-    create_before_destroy = true
+  # Routes
+  routes = {
+    "ANY /" = {
+      integration = {
+        uri                    = module.endpoint_lambda.lambda_function_invoke_arn
+        payload_format_version = "2.0"
+        timeout_milliseconds   = var.endpoint_lambda_timeout * 1000 # seconds
+      }
+    }
   }
-}
 
-resource "aws_api_gateway_stage" "this" {
-  deployment_id = aws_api_gateway_deployment.this.id
-  rest_api_id   = aws_api_gateway_rest_api.this.id
-  stage_name    = "prod"
+  tags = var.tags
 }
