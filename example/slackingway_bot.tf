@@ -21,7 +21,7 @@ locals {
 
 module "slackingway-bot" {
   # https://github.com/kn-lim/chattingway-terraform
-  source = "github.com/kn-lim/chattingway-terraform?ref=v1.2.0"
+  source = "github.com/kn-lim/chattingway-terraform?ref=v1.2.1"
 
   # Required
 
